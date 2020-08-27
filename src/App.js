@@ -20,6 +20,20 @@ class App extends React.Component {
     return (
       <div className="App">
         <Nav onClick={this.handleNavClick} />
+        <main className="App__Flex">
+          {/* <Question />
+          <Tracker /> */}
+        </main>
+        <footer className="App__Footer">
+          <a href="https://github.com/Deanfost/react-trivia">
+            <ion-icon name="logo-github"></ion-icon>
+            <p>View on Github</p>
+          </a>
+          <a href="https://ionicons.com">
+            <ion-icon name="logo-github"></ion-icon>
+            <p>Icons by Ionic</p>
+          </a>
+        </footer>
       </div>
     );
   }

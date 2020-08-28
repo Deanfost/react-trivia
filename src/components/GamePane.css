@@ -1,0 +1,6 @@
+.GamePane {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+}

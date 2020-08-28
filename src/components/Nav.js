@@ -4,12 +4,12 @@ import './Nav.css';
 
 const Nav = props =>
     (
-    <div className="Nav">
+    <nav className="Nav">
         <p className="Nav__Title">Trivia!</p>
         <div className="Nav__Button" onClick={props.onClick}>
             <ion-icon name="refresh"></ion-icon>
         </div>
-    </div>
+    </nav>
     );
 
 Nav.propTypes = {

@@ -27,11 +27,7 @@
 
 /* Click anim */
 .Nav__Button--Rotating {
-    animation: nav-button-spin 0.3s ease-out;
-    -webkit-animation: nav-button-spin 0.3s linear;
-    -moz-animation: nav-button-spin 0.3s linear;
+    animation: spin 0.3s ease-out;
+    -webkit-animation: spin 0.3s linear;
+    -moz-animation: spin 0.3s linear;
 }
-
-@keyframes nav-button-spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-@-moz-keyframes nav-button-spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes nav-button-spin { 100% { -webkit-transform: rotate(360deg); } }

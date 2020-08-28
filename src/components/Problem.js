@@ -4,7 +4,7 @@ import './Problem.css';
 
 const Problem = props => (
     <div className="Problem">
-        <p className="Problem__Oops">Oops!</p>
+        <p className="Problem__Oops">Something went wrong!</p>
         <p className="Problem__Issue">{props.issue.message}</p>
         <div className="Problem__Button" onClick={props.onClick}>Try again</div>
     </div>  

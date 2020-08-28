@@ -26,7 +26,10 @@ class AnswerPane extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.initPanel(nextProps)
+        if (nextProps.incorrectAnswers != this.props.incorrectAnswers ||
+            nextProps.correctAnswer != this.props.correctAnswer) {
+                this.initPanel(nextProps);
+            }
     }
 
     render() {
@@ -48,7 +51,8 @@ class AnswerPane extends React.Component {
 
 AnswerPane.propTypes = {
     incorrectAnswers: PropTypes.arrayOf(String).isRequired,
-    correctAnswer: PropTypes.string.isRequired
+    correctAnswer: PropTypes.string.isRequired,
+    onAnswer: PropTypes.func.isRequired
 };
 
 class AnswerChoice extends React.Component {

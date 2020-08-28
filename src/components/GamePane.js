@@ -6,7 +6,7 @@ import AnswerPane from './AnswerPane'
 import ProgressBar from './ProgressBar';
 import Tracker from './Tracker';
 
-const allotedTime = 15000;    // 15 seconds
+const allotedTime = 10;
 
 class GamePane extends React.Component {
     constructor(props) {
@@ -14,6 +14,7 @@ class GamePane extends React.Component {
 
         this.state = {currentQuestion: null}
         this.handleQuestionAnswered = this.handleQuestionAnswered.bind(this);
+        this.handleTimerTick = this.handleTimerTick.bind(this);
     }
 
     // Is there gonna be a problem if the user hits an answer right as the timer is ending?
@@ -22,8 +23,29 @@ class GamePane extends React.Component {
         
     }
 
+    handleTimerTick() {
+        const newTime = this.state.timeRemaining - 1;
+        let newTimer = this.state.currTimer;
+        if (newTime === 0) {
+            clearInterval(this.state.currTimer);
+            newTimer = null;
+        }
+        this.setState({timeRemaining: newTime, currTimer: newTimer})
+    }
+
     componentWillMount() {
-        this.setState({currentQuestion: this.props.nextQuestion()})
+        // Set timer, request first question
+        let newState = {
+            currentQuestion: this.props.nextQuestion(),
+            timeRemaining: allotedTime,
+            currTimer: setInterval(this.handleTimerTick, 1000)
+        };
+        this.setState(newState);
+    }
+
+    componentWillReceiveProps(_) {
+        // Set timer for new incoming question
+        this.setState({timeRemaining: allotedTime, currTimer: setInterval(this.handleTimerTick, 1000)});
     }
 
     render() {
@@ -39,11 +61,16 @@ class GamePane extends React.Component {
                         correctAnswer={this.state.currentQuestion.correctAnswer}
                         onAnswer={this.handleQuestionAnswered}
                     />
-                    <ProgressBar allotedTime={allotedTime} onFinish={this.handleQuestionAnswered} />
+                    <ProgressBar allotedTime={allotedTime} timeRemaining={this.state.timeRemaining} />
                 </div>
                 <Tracker />
             </main>
         );
+    }
+
+    componentWillUnmount() {
+        // Stop any running timers
+        if (this.state.currTimer) clearInterval(this.state.currTimer);
     }
 }
 

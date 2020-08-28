@@ -3,6 +3,7 @@
     border-radius: 10px;
     overflow: hidden;
     background-color: var(--grey-light);
+    margin-bottom: 30px;
 }
 
 .AnswerPane__Choice {

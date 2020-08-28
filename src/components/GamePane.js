@@ -6,11 +6,24 @@ import AnswerPane from './AnswerPane'
 import ProgressBar from './ProgressBar';
 import Tracker from './Tracker';
 
-const answeringTime = 15000;    // 15 seconds
+const allotedTime = 15000;    // 15 seconds
 
 class GamePane extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {currentQuestion: null}
+        this.handleQuestionAnswered = this.handleQuestionAnswered.bind(this);
+    }
+
+    // Is there gonna be a problem if the user hits an answer right as the timer is ending?
+
+    handleQuestionAnswered(wasRight) {
+        
+    }
+
+    componentWillMount() {
+        this.setState({currentQuestion: this.props.nextQuestion()})
     }
 
     render() {
@@ -18,14 +31,15 @@ class GamePane extends React.Component {
             <main className="GamePane">
                 <div className="GamePane__QA">
                     <Question 
-                        questionNumber={this.props.questionNumber}
-                        questionPrompt={this.props.questionPrompt}
+                        questionNumber={this.state.currentQuestion.number}
+                        questionPrompt={this.state.currentQuestion.prompt}
                     />
                     <AnswerPane 
-                        answers={this.props.answers} 
-                        correctAnswer={this.props.correctAnswer}
+                        incorrectAnswers={this.state.currentQuestion.incorrectAnswers}
+                        correctAnswer={this.state.currentQuestion.correctAnswer}
+                        onAnswer={this.handleQuestionAnswered}
                     />
-                    <ProgressBar totalTime={answeringTime} elapsed={{}} />
+                    <ProgressBar allotedTime={allotedTime} onFinish={this.handleQuestionAnswered} />
                 </div>
                 <Tracker />
             </main>
@@ -34,10 +48,7 @@ class GamePane extends React.Component {
 }
 
 GamePane.propTypes = {
-    questionNumber: PropTypes.number.isRequired,
-    questionPrompt: PropTypes.string.isRequired,
-    questionAnswers: PropTypes.array.isRequired,
-    correctAnswer: PropTypes.string.isRequired
+    nextQuestion: PropTypes.func.isRequired
 };
 
 export default GamePane;

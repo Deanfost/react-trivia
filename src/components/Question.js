@@ -9,13 +9,17 @@ class Question extends React.Component {
 
     render() {
         return (
-            <div></div>
+            <div className="Question">
+                <h1 className="Question__Header">Question {this.props.questionNumber}</h1>
+                <p className="Question__Prompt">{this.props.questionPrompt}</p>
+            </div>
         );
     }
 }
 
 Question.propTypes = {
-    question: PropTypes.object.isRequired
+    questionNumber: PropTypes.number.isRequired, 
+    questionPrompt: PropTypes.string.isRequired
 };
 
 export default Question;

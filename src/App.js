@@ -15,18 +15,22 @@ class App extends React.Component {
     this.state = {pending: true, error: null};
 
     this.handleNavClick = this.handleNavClick.bind(this);
-    this.handleQuestionAnswered = this.handleQuestionAnswered.bind(this);
     this.fetchQuestions = this.fetchQuestions.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
 }
 
   async fetchQuestions() {
     this.setState({pending: true, error: null});
+    // Poll the new game data
     try {
       let response = await fetch(triviaEndpoint);
       if (response.ok) {
+        // Parse the data, attach and init a question generator
         let jsonData = await response.json();
-        this.setState({pending: false, gameData: jsonData.results});
-        console.log(this.state.gameData);
+        this.setState({
+          pending: false, 
+          questionGenerator: this.questionGenerator(jsonData.results)
+        });
       } else {
         throw new Error(`Fetch operation failed: ${response.status}`);
       }
@@ -36,19 +40,25 @@ class App extends React.Component {
     }
   }
 
+  * questionGenerator(gameData) {
+    for (let i = 0; i < gameData.length; i++) {
+      let questionItem = gameData[i];
+      let nextQuestion = {
+        number: i + 1,
+        prompt: questionItem.question,
+        correctAnswer: questionItem["correct_answer"],
+        incorrectAnswers: questionItem["incorrect_answers"]
+      };
+      yield nextQuestion;
+    };
+  }
+
   handleNavClick() {
-    console.log('hello!');
+    this.fetchQuestions();
   }
 
-  handleQuestionAnswered(wasCorrect) {
-    
-  }
-
-  * nextQuestion() {
-    let index = 0;
-    let nextQuestion = {};
-    index++;
-    yield nextQuestion;
+  nextQuestion() {
+    return this.state.questionGenerator.next().value;
   }
 
   componentDidMount() {
@@ -60,7 +70,7 @@ class App extends React.Component {
     if (!this.state.pending && !this.state.error) {
       content = <div className="App">
           <Nav onClick={this.handleNavClick} />
-          <GamePane />
+          <GamePane nextQuestion={this.nextQuestion} />
           <Footer />
         </div>;
     } else if (this.state.pending) {

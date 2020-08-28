@@ -1,0 +1,38 @@
+.AnswerPane {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--grey-light);
+}
+
+.AnswerPane__Choice {
+    height: 80px;
+    color: var(--grey-dark);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.AnswerPane__Choice--Correct {
+    cursor: default;
+    background-color: var(--accent-green);
+    color: white;
+}
+
+.AnswerPane__Choice--Incorrect {
+    cursor: default;
+    background-color: var(--accent-red);
+    color: white;
+}
+
+.AnswerPane__Choice:nth-last-of-type(odd) {
+    background-color: var(--grey-light-2);
+}
+
+.AnswerPane__Choice:hover {
+    background-color: var(--accent-blue);
+    color: white;
+}

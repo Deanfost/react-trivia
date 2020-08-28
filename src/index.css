@@ -3,6 +3,7 @@
   --white: #FFFFFF;
   --grey-light: #EFEFEF;
   --grey-mid: #A7A7A7;
+  --grey-light-2: #E9E9E9;
   --grey-dark: #2E2E2E;
   --accent-green: #48D439;
   --accent-red: #FF3717;
@@ -12,12 +13,14 @@
 }
 
 * {
+  /* Reset */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Montserrat';
 }
 
+/* Shared anims */
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

@@ -9,38 +9,19 @@ class AnswerPane extends React.Component {
         this.handleOptionChosen = this.handleOptionChosen.bind(this);
     }
 
-    initPanel(props) {
-        // Init the choices
-        let correctIndex = Math.floor(Math.random() * (props.incorrectAnswers.length + 1));
-        let choiceList = props.incorrectAnswers.slice();
-        choiceList.splice(correctIndex, 0, props.correctAnswer);
-        this.setState({answered: false, choiceList, correctIndex});
-    }
-
     handleOptionChosen(wasCorrect) {
-        console.log(wasCorrect);
-    }
-
-    componentWillMount() {
-        this.initPanel(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.incorrectAnswers != this.props.incorrectAnswers ||
-            nextProps.correctAnswer != this.props.correctAnswer) {
-                this.initPanel(nextProps);
-            }
+        this.props.onAnswer(wasCorrect);
     }
 
     render() {
         return (
             <div className="AnswerPane">
-                {this.state.choiceList.map((value, index) => (
-                    <AnswerChoice 
-                        choice={value}  
-                        isCorrect={index === this.state.correctIndex}
-                        shouldReveal={false}
-                        index={index}
+                {this.props.choiceList.map((value, index) => (
+                    <AnswerChoice
+                        key={index}
+                        choice={value}
+                        isCorrect={index === this.props.correctIndex}
+                        shouldReveal={this.props.answered}
                         onChosen={this.handleOptionChosen}
                     />
                 ))}
@@ -50,26 +31,35 @@ class AnswerPane extends React.Component {
 }
 
 AnswerPane.propTypes = {
-    incorrectAnswers: PropTypes.arrayOf(String).isRequired,
-    correctAnswer: PropTypes.string.isRequired,
-    onAnswer: PropTypes.func.isRequired
+    choiceList: PropTypes.arrayOf(String).isRequired,
+    correctIndex: PropTypes.number.isRequired,
+    onAnswer: PropTypes.func.isRequired,
+    answered: PropTypes.bool.isRequired
 };
 
 class AnswerChoice extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = { chosen: false };
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick() {
         this.props.onChosen(this.props.isCorrect);
+        this.setState({ chosen: true });
     }
 
     render() {
+        const shouldReveal = this.props.shouldReveal;
+        const isCorrect = this.props.isCorrect;
+
         let classExpr = "AnswerPane__Choice";
-        if (this.props.shouldReveal && this.props.isCorrect) classExpr += " AnswerPane__Choice--Correct";
-        else if (this.props.shouldReveal && !this.props.isCorrect) classExpr += " AnswerPane__Choice--Incorrect";
+        if (!shouldReveal) classExpr += " AnswerPane__Choice--Enabled";
+        if (shouldReveal && isCorrect) classExpr += " AnswerPane__Choice--Correct";
+        else if (shouldReveal && !isCorrect && this.state.chosen)
+            classExpr += " AnswerPane__Choice--Incorrect";
+
         return (
             <div className={classExpr} onClick={this.handleClick}>
                 <p>{this.props.choice}</p>
@@ -82,7 +72,6 @@ AnswerChoice.propTypes = {
     choice: PropTypes.string.isRequired,
     isCorrect: PropTypes.bool.isRequired,
     shouldReveal: PropTypes.bool.isRequired,
-    index: PropTypes.number.isRequired,
     onChosen: PropTypes.func.isRequired
 }
 

@@ -18,7 +18,7 @@ class AnswerPane extends React.Component {
             <div className="AnswerPane">
                 {this.props.choiceList.map((value, index) => (
                     <AnswerChoice
-                        key={index}
+                        key={this.props.choiceIDs[index]}
                         choice={value}
                         isCorrect={index === this.props.correctIndex}
                         shouldReveal={this.props.answered}
@@ -32,6 +32,7 @@ class AnswerPane extends React.Component {
 
 AnswerPane.propTypes = {
     choiceList: PropTypes.arrayOf(String).isRequired,
+    choiceIDs: PropTypes.arrayOf(Number).isRequired,
     correctIndex: PropTypes.number.isRequired,
     onAnswer: PropTypes.func.isRequired,
     answered: PropTypes.bool.isRequired

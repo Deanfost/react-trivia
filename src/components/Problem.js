@@ -7,7 +7,7 @@ const Problem = props => (
         <p className="Problem__Oops">Something went wrong!</p>
         <p className="Problem__Issue">{props.issue.message}</p>
         <div className="Problem__Button" onClick={props.onClick}>Try again</div>
-    </div>  
+    </div>
 );
 
 Problem.propTypes = {

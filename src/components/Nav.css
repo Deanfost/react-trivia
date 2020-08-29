@@ -1,7 +1,6 @@
 .Nav {
     width: 200px;
     padding: 15px;
-    margin: 0 auto;
     background-color: var(--grey-light);
     border-radius: 10px;
     font-size: 18px;
@@ -11,6 +10,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    position: absolute;
+    top: 20px;
 }
 
 .Nav__Title {

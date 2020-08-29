@@ -6,7 +6,7 @@ import Footer from './components/Footer';
 import Loader from './components/Loader';
 import Problem from './components/Problem';
 
-const triviaEndpoint = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy';
+const triviaEndpoint = 'https://opentdb.com/api.php?amount=10&difficulty=easy';
 
 class App extends React.Component {
 	constructor(props) {
@@ -68,18 +68,20 @@ class App extends React.Component {
 	render() {
 		let content;
 		if (!this.state.pending && !this.state.error) {
-			content = <div className="App">
-				<Nav onClick={this.handleNavClick} />
-				<GamePane nextQuestion={this.nextQuestion} />
-				<Footer />
-			</div>;
+			content = <GamePane nextQuestion={this.nextQuestion} />;
 		} else if (this.state.pending) {
 			content = <Loader />;
 		} else {
 			content = <Problem issue={this.state.error} onClick={this.fetchQuestions} />;
 		}
 
-		return content;
+		return (
+			<div className="App">
+				<Nav onClick={this.handleNavClick} />
+					{content}
+				<Footer />
+			</div>
+		);
 	}
 }
 

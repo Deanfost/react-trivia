@@ -27,7 +27,7 @@
 }
 
 .ProgressBar__Fill {
-    width: 10px;
+    width: 0px;
     height: 20px;
     background-image: linear-gradient(to bottom right, var(--blue-grad-start), var(--blue-grad-end));   
 }

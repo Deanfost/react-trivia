@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import nextId from 'react-id-generator';
 import './GamePane.css';
 import Question from './Question';
 import AnswerPane from './AnswerPane'
@@ -12,25 +13,27 @@ class GamePane extends React.Component {
     constructor(props) {
         super(props);
 
+        this.getNextQuestionState = this.getNextQuestionState.bind(this);
         this.handleQuestionAnswered = this.handleQuestionAnswered.bind(this);
         this.handleTimerTick = this.handleTimerTick.bind(this);
     }
 
     // Is there gonna be a problem if the user hits an answer right as the timer is ending?
 
-    initQuestionState() {
+    getNextQuestionState() {
         // Set timer, request and init question
         const questionObject = this.props.nextQuestion();
         const choices = this.createChoices(questionObject.incorrectAnswers, questionObject.correctAnswer);
         let newState = {
             questionObject,
             timeRemaining: allotedTime,
-            currTimer: setInterval(this.handleTimerTick, 1000),
+            currTimer: setInterval(this.handleTimerTick, 33.33),   // 30 fps
             choiceList: choices.choiceList,
             correctIndex: choices.correctIndex,
+            choiceIDs: choices.IDs,
             answered: false
         };
-        this.setState(newState);
+        return newState;
     }
 
     createChoices(incorrectAnswers, correctAnswer) {
@@ -38,38 +41,55 @@ class GamePane extends React.Component {
         let correctIndex = Math.floor(Math.random() * (incorrectAnswers.length + 1));
         let choiceList = incorrectAnswers.slice();
         choiceList.splice(correctIndex, 0, correctAnswer);
-        return {choiceList, correctIndex};
+        let IDs = [];
+        for (let i = 0; i < choiceList.length; i++) IDs[i] = nextId();
+        return { choiceList, correctIndex, IDs };
+    }
+
+    delayedQuestionUpdate() {
+        setTimeout(() => {
+            this.setState(this.getNextQuestionState());
+        }, 2000);
     }
 
     handleQuestionAnswered(wasCorrect) {
-        // Clear timer, update UI
-        if (wasCorrect) {
-            // Update Tracker
-        }
-        clearInterval(this.state.currTimer);
-        this.setState({ currTimer: null, answered: true });
+        // Otherwise, edge case where the time has already run out
+        if (!this.state.answered) {
+            // Clear timer, update UI
+            if (wasCorrect) {
+                // Update Tracker
+            }
+            clearInterval(this.state.currTimer);
+            this.setState({ currTimer: null, answered: true });
 
-        // Init next question after delay
-        // this.initQuestionState();
+            // Queue up next question
+            this.delayedQuestionUpdate();
+        }
     }
 
     handleTimerTick() {
-        const newTime = this.state.timeRemaining - 1;
-        let newTimer = this.state.currTimer;
-        let answered = false;
-        if (newTime === 0) {
-            clearInterval(this.state.currTimer);
-            newTimer = null;
-            answered = true;
+        // Otherwise, edge case where the user has already answered
+        if (!this.state.answered) {
+            const newTime = this.state.timeRemaining - 0.033;
+            let newTimer = this.state.currTimer;
+            let answered = false;
+            if (newTime <= 0) {
+                clearInterval(this.state.currTimer);
+                newTimer = null;
+                answered = true;
+
+                // Queue up next question
+                this.delayedQuestionUpdate();
+            }
+            this.setState({ timeRemaining: newTime, currTimer: newTimer, answered });
         }
-        this.setState({ timeRemaining: newTime, currTimer: newTimer, answered })
     }
 
     componentWillMount() {
         // Init first question
-        this.initQuestionState();
+        this.setState(this.getNextQuestionState());
     }
-    
+
     render() {
         return (
             <main className="GamePane">
@@ -80,6 +100,7 @@ class GamePane extends React.Component {
                     />
                     <AnswerPane
                         choiceList={this.state.choiceList}
+                        choiceIDs={this.state.choiceIDs}
                         correctIndex={this.state.correctIndex}
                         onAnswer={this.handleQuestionAnswered}
                         answered={this.state.answered}

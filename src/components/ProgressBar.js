@@ -11,9 +11,9 @@ class ProgressBar extends React.Component {
     }
 
     render() {
-        const paddedString = String(this.props.timeRemaining).padStart(2, "0");
+        const paddedString = String(Math.ceil(this.props.timeRemaining)).padStart(2, "0");
         let timerClassExpr = "ProgressBar__Timer";
-        if (this.props.timeRemaining === 0) timerClassExpr += " ProgressBar__Timer--End";
+        if (this.props.timeRemaining <= 0) timerClassExpr += " ProgressBar__Timer--End";
         return (
             <div className="ProgressBar">
                 <p className={timerClassExpr}>0:{paddedString}</p>
@@ -24,13 +24,13 @@ class ProgressBar extends React.Component {
         );
     }
 
-    componentDidUpdate(prevProps, _) {
+    componentDidUpdate() {
         const barNode = this.barRef.current;
-        const completion = prevProps.timeRemaining / prevProps.allotedTime;
+        const completion = (this.props.allotedTime - this.props.timeRemaining) / this.props.allotedTime;
         const newWidth = completion * barNode.getBoundingClientRect().width;
 
         const fillNode = this.fillRef.current;
-        fillNode.setAttribute("style", `width: ${newWidth}`);
+        fillNode.setAttribute("style", `width: ${newWidth}px`);
     }
 }
 

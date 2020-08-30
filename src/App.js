@@ -7,6 +7,7 @@ import Loader from './components/Loader';
 import Problem from './components/Problem';
 
 const triviaEndpoint = 'https://opentdb.com/api.php?amount=10&difficulty=easy';
+const questionCount = 10;
 
 class App extends React.Component {
 	constructor(props) {
@@ -68,7 +69,7 @@ class App extends React.Component {
 	render() {
 		let content;
 		if (!this.state.pending && !this.state.error) {
-			content = <GamePane nextQuestion={this.nextQuestion} />;
+			content = <GamePane nextQuestion={this.nextQuestion} questionCount={questionCount} />;
 		} else if (this.state.pending) {
 			content = <Loader />;
 		} else {

@@ -13,12 +13,11 @@ class GamePane extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {runningResults: []}
         this.getNextQuestionState = this.getNextQuestionState.bind(this);
         this.handleQuestionAnswered = this.handleQuestionAnswered.bind(this);
         this.handleTimerTick = this.handleTimerTick.bind(this);
     }
-
-    // Is there gonna be a problem if the user hits an answer right as the timer is ending?
 
     getNextQuestionState() {
         // Set timer, request and init question
@@ -27,7 +26,7 @@ class GamePane extends React.Component {
         let newState = {
             questionObject,
             timeRemaining: allotedTime,
-            currTimer: setInterval(this.handleTimerTick, 33.33),   // 30 fps
+            currTimer: setInterval(this.handleTimerTick, 16.67),   // 60 fps
             choiceList: choices.choiceList,
             correctIndex: choices.correctIndex,
             choiceIDs: choices.IDs,
@@ -56,11 +55,12 @@ class GamePane extends React.Component {
         // Otherwise, edge case where the time has already run out
         if (!this.state.answered) {
             // Clear timer, update UI
-            if (wasCorrect) {
-                // Update Tracker
-            }
             clearInterval(this.state.currTimer);
-            this.setState({ currTimer: null, answered: true });
+            this.setState({ 
+                currTimer: null, 
+                answered: true, 
+                runningResults: this.state.runningResults.concat([wasCorrect])
+            });
 
             // Queue up next question
             this.delayedQuestionUpdate();
@@ -70,18 +70,25 @@ class GamePane extends React.Component {
     handleTimerTick() {
         // Otherwise, edge case where the user has already answered
         if (!this.state.answered) {
-            const newTime = this.state.timeRemaining - 0.033;
+            const newTime = this.state.timeRemaining - 0.01617;
             let newTimer = this.state.currTimer;
             let answered = false;
+            let newResults = this.state.runningResults;
             if (newTime <= 0) {
                 clearInterval(this.state.currTimer);
                 newTimer = null;
                 answered = true;
+                newResults = this.state.runningResults.concat([false]);
 
                 // Queue up next question
                 this.delayedQuestionUpdate();
             }
-            this.setState({ timeRemaining: newTime, currTimer: newTimer, answered });
+            this.setState({ 
+                timeRemaining: newTime, 
+                currTimer: newTimer, 
+                answered,
+                runningResults: newResults
+            });
         }
     }
 
@@ -107,7 +114,12 @@ class GamePane extends React.Component {
                     />
                     <ProgressBar allotedTime={allotedTime} timeRemaining={this.state.timeRemaining} />
                 </div>
-                <Tracker />
+                <Tracker 
+                    currNumber={this.state.questionObject.number} 
+                    runningResults={this.state.runningResults} 
+                    questionCount={this.props.questionCount} 
+                    currWasAnswered={this.state.answered}
+                />
             </main>
         );
     }
@@ -119,7 +131,8 @@ class GamePane extends React.Component {
 }
 
 GamePane.propTypes = {
-    nextQuestion: PropTypes.func.isRequired
+    nextQuestion: PropTypes.func.isRequired,
+    questionCount: PropTypes.number.isRequired
 };
 
 export default GamePane;

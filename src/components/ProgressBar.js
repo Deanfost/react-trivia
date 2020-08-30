@@ -6,7 +6,6 @@ class ProgressBar extends React.Component {
     constructor(props) {
         super(props);
 
-        this.barRef = React.createRef();
         this.fillRef = React.createRef();
     }
 
@@ -17,7 +16,7 @@ class ProgressBar extends React.Component {
         return (
             <div className="ProgressBar">
                 <p className={timerClassExpr}>0:{paddedString}</p>
-                <div className="ProgressBar__Bar" ref={this.barRef}>
+                <div className="ProgressBar__Bar">
                     <div className="ProgressBar__Fill" ref={this.fillRef}></div>
                 </div>
             </div>
@@ -25,12 +24,11 @@ class ProgressBar extends React.Component {
     }
 
     componentDidUpdate() {
-        const barNode = this.barRef.current;
-        const completion = (this.props.allotedTime - this.props.timeRemaining) / this.props.allotedTime;
-        const newWidth = completion * barNode.getBoundingClientRect().width;
-
         const fillNode = this.fillRef.current;
-        fillNode.setAttribute("style", `width: ${newWidth}px`);
+        let completion = (this.props.allotedTime - this.props.timeRemaining) / this.props.allotedTime;
+        completion *= 100;
+        completion = completion.toFixed(3);
+        fillNode.setAttribute("style", `width: ${completion}%`);
     }
 }
 

@@ -6,7 +6,7 @@ import Footer from './components/Footer';
 import Loader from './components/Loader';
 import Problem from './components/Problem';
 
-const triviaEndpoint = 'https://opentdb.com/api.php?amount=10&difficulty=easy';
+const triviaEndpoint = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy';
 const questionCount = 10;
 
 class App extends React.Component {
@@ -33,11 +33,10 @@ class App extends React.Component {
 					questionGenerator: this.questionGenerator(jsonData.results)
 				});
 			} else {
-				throw new Error(`Fetch operation failed: ${response.status}`);
+				throw new Error(`Fetch operation failed, received error code: ${response.status}`);
 			}
-		} catch (e) {
-			this.setState({ pending: false, error: e })
-			console.log(e);
+		} catch (error) {
+			this.setState({ pending: false, error})
 		}
 	}
 
@@ -62,18 +61,25 @@ class App extends React.Component {
 		return this.state.questionGenerator.next().value;
 	}
 
+	static getDerivedStateFromError(error) {
+		this.setState({error});
+	}
+
 	componentDidMount() {
 		this.fetchQuestions();
 	}
 
 	render() {
 		let content;
+		let classExpr = "App";
 		if (!this.state.pending && !this.state.error) {
 			content = <GamePane nextQuestion={this.nextQuestion} questionCount={questionCount} />;
 		} else if (this.state.pending) {
 			content = <Loader />;
+			classExpr += " App--Centered";
 		} else {
 			content = <Problem issue={this.state.error} onClick={this.fetchQuestions} />;
+			classExpr += " App--Centered";
 		}
 
 		return (

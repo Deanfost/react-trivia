@@ -26,7 +26,7 @@ class GamePane extends React.Component {
         let newState = {
             questionObject,
             timeRemaining: allotedTime,
-            currTimer: setInterval(this.handleTimerTick, 16.67),   // 60 fps
+            currTimer: setInterval(this.handleTimerTick, 16.67),   // ~60 fps
             choiceList: choices.choiceList,
             correctIndex: choices.correctIndex,
             choiceIDs: choices.IDs,

@@ -5,6 +5,9 @@
   margin: 0 auto;
   position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
+}
+
+.App--Centered {
+  align-items: center;
 }

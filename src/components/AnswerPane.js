@@ -47,8 +47,10 @@ class AnswerChoice extends React.Component {
     }
 
     handleClick() {
-        this.props.onChosen(this.props.isCorrect);
-        this.setState({ chosen: true });
+        if (!this.props.shouldReveal) {
+            this.props.onChosen(this.props.isCorrect);
+            this.setState({ chosen: true });
+        }
     }
 
     render() {

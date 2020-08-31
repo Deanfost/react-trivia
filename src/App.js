@@ -7,8 +7,8 @@ import Loader from './components/Loader';
 import GameModal from './components/GameModal';
 import Problem from './components/Problem';
 
-const triviaEndpoint = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy';
 const questionCount = 10;
+const triviaEndpoint = `https://opentdb.com/api.php?amount=${questionCount}&category=9&difficulty=easy`;
 
 class App extends React.Component {
 	constructor(props) {
@@ -28,15 +28,20 @@ class App extends React.Component {
 		try {
 			let response = await fetch(triviaEndpoint);
 			if (response.ok) {
-				// Parse the data, attach and init a question generator
+				// Parse the data, last error checks
 				let jsonData = await response.json();
-				this.setState({
-					dataIsPending: false,
-					questionGenerator: this.questionGenerator(jsonData.results),
-					finalScore: null
-				});
+				if (jsonData["response_code"] === 0) {
+					// Bind question generator
+					this.setState({
+						dataIsPending: false,
+						questionGenerator: this.questionGenerator(jsonData.results),
+						finalScore: null
+					});
+				} else {
+					throw new Error(`API returned error code: ${jsonData["response_code"]}`);
+				}
 			} else {
-				throw new Error(`Fetch operation failed, received error code: ${response.status}`);
+				throw new Error(`Fetch operation failed, received error code: (${response.status}) ${response.statusText}`);
 			}
 		} catch (error) {
 			this.setState({ dataIsPending: false, error})

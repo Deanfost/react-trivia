@@ -4,7 +4,7 @@ import Nav from './components/Nav';
 import GamePane from './components/GamePane';
 import Footer from './components/Footer';
 import Loader from './components/Loader';
-import GameFinished from './components/GameFinished';
+import GameModal from './components/GameModal';
 import Problem from './components/Problem';
 
 const triviaEndpoint = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy';
@@ -14,16 +14,16 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { pending: true, error: null };
+		this.state = { dataIsPending: false, error: null, showingTitleScreen: true};
 
-		this.handlePlayAgain = this.handlePlayAgain.bind(this);
+		this.handleNavClick = this.handleNavClick.bind(this);
 		this.fetchQuestions = this.fetchQuestions.bind(this);
 		this.nextQuestion = this.nextQuestion.bind(this);
 		this.handleEndOfGame = this.handleEndOfGame.bind(this);
 	}
 
 	async fetchQuestions() {
-		this.setState({ pending: true, error: null });
+		this.setState({ dataIsPending: true, error: null, showingTitleScreen: false});
 		// Poll the new game data
 		try {
 			let response = await fetch(triviaEndpoint);
@@ -31,7 +31,7 @@ class App extends React.Component {
 				// Parse the data, attach and init a question generator
 				let jsonData = await response.json();
 				this.setState({
-					pending: false,
+					dataIsPending: false,
 					questionGenerator: this.questionGenerator(jsonData.results),
 					finalScore: null
 				});
@@ -39,7 +39,7 @@ class App extends React.Component {
 				throw new Error(`Fetch operation failed, received error code: ${response.status}`);
 			}
 		} catch (error) {
-			this.setState({ pending: false, error})
+			this.setState({ dataIsPending: false, error})
 		}
 	}
 
@@ -68,12 +68,12 @@ class App extends React.Component {
 		};
 	}
 
-	handlePlayAgain() {
-		this.fetchQuestions();
-	}
-
 	nextQuestion() {
 		return this.state.questionGenerator.next();
+	}
+
+	handleNavClick() {
+		this.setState({showingTitleScreen: true});
 	}
 
 	handleEndOfGame(finalScore) {
@@ -84,37 +84,48 @@ class App extends React.Component {
 		this.setState({error});
 	}
 
-	componentDidMount() {
-		this.fetchQuestions();
-	}
-
 	render() {
 		let content;
 		let classExpr = "App";
-		if (!this.state.pending && !this.state.error && this.state.finalScore === null) {
+		const gameIsRunning = !this.state.dataIsPending && 
+			!this.state.error && this.state.finalScore === null && 
+			!this.state.showingTitleScreen;
+		if (this.state.showingTitleScreen) {
+			// Title screen
+			content = <GameModal 
+					shouldDisplayTitle={true}
+					onClick={this.fetchQuestions} 
+					/>;
+			classExpr += " App--Centered";
+		} else if (this.state.dataIsPending) {
+			// Loading data
+			content = <Loader />;
+			classExpr += " App--Centered";
+		} else if (gameIsRunning) {
+			// Game is running
 			content = <GamePane 
 					nextQuestion={this.nextQuestion} 
 					questionCount={questionCount} 
 					endGame={this.handleEndOfGame} 
 				/>;
-		} else if (!this.state.pending && !this.state.error && this.state.finalScore !== null) {
-			content = <GameFinished 
+		} else if (!this.state.dataIsPending && !this.state.error && this.state.finalScore !== null) {
+			// Game is over
+			content = <GameModal 
+					shouldDisplayTitle={false}
 					score={this.state.finalScore} 
 					totalQuestions={questionCount} 
-					onClick={this.handlePlayAgain} 
+					onClick={this.fetchQuestions} 
 					/>;
 			classExpr += " App--Centered";
-		} else if (this.state.pending) {
-			content = <Loader />;
-			classExpr += " App--Centered";
 		} else {
+			// There was an issue
 			content = <Problem issue={this.state.error} onClick={this.fetchQuestions} />;
 			classExpr += " App--Centered";
 		}
 
 		return (
 			<div className={classExpr}>
-				<Nav onClick={this.handlePlayAgain} />
+				{gameIsRunning && <Nav onClick={this.handleNavClick} />}
 					{content}
 				<Footer />
 			</div>

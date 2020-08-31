@@ -3,8 +3,6 @@
     padding: 15px;
     background-color: var(--grey-light);
     border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
     color: var(--grey-dark);
     display: flex;
     flex-direction: row;
@@ -16,19 +14,20 @@
 
 .Nav__Title {
     margin: 0;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .Nav__Button {
+    display: flex;
+    align-items: center;
     cursor: pointer;
+}
+
+.Nav__Button ion-icon {
+    font-size: 24px;
 }
 
 .Nav__Button:hover {
     color: var(--accent-blue);
-}
-
-/* Click anim */
-.Nav__Button--Rotating {
-    animation: spin 0.3s ease-out;
-    -webkit-animation: spin 0.3s linear;
-    -moz-animation: spin 0.3s linear;
 }

@@ -27,22 +27,21 @@ class App extends React.Component {
 		// Poll the new game data
 		try {
 			let response = await fetch(triviaEndpoint);
-			if (response.ok) {
-				// Parse the data, last error checks
-				let jsonData = await response.json();
-				if (jsonData["response_code"] === 0) {
-					// Bind question generator
-					this.setState({
-						dataIsPending: false,
-						questionGenerator: this.questionGenerator(jsonData.results),
-						finalScore: null
-					});
-				} else {
-					throw new Error(`API returned error code: ${jsonData["response_code"]}`);
-				}
-			} else {
+			if (!response.ok) 
 				throw new Error(`Fetch operation failed, received error code: (${response.status}) ${response.statusText}`);
-			}
+			
+			// Parse the data, last error checks
+			let jsonData = await response.json();
+			if (jsonData["response_code"] !== 0) 
+				throw new Error(`API returned error code: ${jsonData["response_code"]}`);
+
+			// Bind question generator
+			this.setState({
+				dataIsPending: false,
+				questionGenerator: this.questionGenerator(jsonData.results),
+				finalScore: null
+			});
+			
 		} catch (error) {
 			this.setState({ dataIsPending: false, error})
 		}

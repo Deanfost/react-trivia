@@ -1,0 +1,40 @@
+.GameFinished {
+    width: 100%;
+    max-width: 500px;
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--grey-light);
+    border-radius: 10px;
+}
+
+.GameFinished__Caption {
+    font-size: 20px;
+    font-weight: medium;
+    color: var(--grey-mid);
+    margin-bottom: 10px;
+}
+
+.GameFinished__Score {
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--grey-dark);
+    margin-bottom: 30px;
+}
+
+.GameFinished__Button {
+    width: 340px;
+    height: 70px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--accent-blue);
+    border-radius: 10px;
+}
+

@@ -21,18 +21,23 @@ class GamePane extends React.Component {
 
     getNextQuestionState() {
         // Set timer, request and init question
-        const questionObject = this.props.nextQuestion();
-        const choices = this.createChoices(questionObject.incorrectAnswers, questionObject.correctAnswer);
-        let newState = {
-            questionObject,
-            timeRemaining: allotedTime,
-            currTimer: setInterval(this.handleTimerTick, 16.67),   // ~60 fps
-            choiceList: choices.choiceList,
-            correctIndex: choices.correctIndex,
-            choiceIDs: choices.IDs,
-            answered: false
-        };
-        return newState;
+        const generatorState = this.props.nextQuestion();
+        if (generatorState.done) {
+            return null;
+        } else {
+            const questionObject = generatorState.value;
+            const choices = this.createChoices(questionObject.incorrectAnswers, questionObject.correctAnswer);
+            let newState = {
+                questionObject,
+                timeRemaining: allotedTime,
+                currTimer: setInterval(this.handleTimerTick, 16.67),   // ~60 fps
+                choiceList: choices.choiceList,
+                correctIndex: choices.correctIndex,
+                choiceIDs: choices.IDs,
+                answered: false
+            };
+            return newState;
+        }
     }
 
     createChoices(incorrectAnswers, correctAnswer) {
@@ -47,7 +52,16 @@ class GamePane extends React.Component {
 
     delayedQuestionUpdate() {
         setTimeout(() => {
-            this.setState(this.getNextQuestionState());
+            const newState = this.getNextQuestionState();
+            if (!newState) {
+                // Time to end the game
+                const score = this.state.runningResults.reduce((accum, currentValue) => {
+                    return currentValue ? accum + 1 : accum;
+                }, 0);
+                this.props.endGame(score);
+            } else {
+                this.setState(newState);
+            }   
         }, 2000);
     }
 
@@ -132,7 +146,8 @@ class GamePane extends React.Component {
 
 GamePane.propTypes = {
     nextQuestion: PropTypes.func.isRequired,
-    questionCount: PropTypes.number.isRequired
+    questionCount: PropTypes.number.isRequired,
+    endGame: PropTypes.func.isRequired
 };
 
 export default GamePane;

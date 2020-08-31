@@ -46,11 +46,23 @@ class App extends React.Component {
 	* questionGenerator(gameData) {
 		for (let i = 0; i < gameData.length; i++) {
 			let questionItem = gameData[i];
+
+			// Parse HTML entities
+			const parser = new DOMParser();
+			const decodedPrompt = parser.parseFromString(questionItem["question"], "text/html")
+				.documentElement.textContent;
+			const decodedAnswer = parser.parseFromString(questionItem["correct_answer"], "text/html")
+				.documentElement.textContent;
+			const decodedIncorrectAnswers = questionItem["incorrect_answers"].map(value => {
+				return parser.parseFromString(value, "text/html").documentElement.textContent;
+			});
+			
+			// Package and send
 			let nextQuestion = {
 				number: i + 1,
-				prompt: questionItem.question,
-				correctAnswer: questionItem["correct_answer"],
-				incorrectAnswers: questionItem["incorrect_answers"]
+				prompt: decodedPrompt,
+				correctAnswer: decodedAnswer,
+				incorrectAnswers: decodedIncorrectAnswers
 			};
 			yield nextQuestion;
 		};

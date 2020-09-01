@@ -1,6 +1,6 @@
 .Footer {
-    width: 400px;
-    margin-left: -200px;
+    width: 600px;
+    margin-left: -300px;
     color: var(--grey-mid);
     font-size: 14px;
     position: absolute;
@@ -8,7 +8,7 @@
     left: 50%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
   }
   
   .Footer a {

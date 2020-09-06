@@ -8,7 +8,7 @@ import GameModal from './components/GameModal';
 import Problem from './components/Problem';
 
 const questionCount = 10;
-const triviaEndpoint = `https://opentdb.com/api.php?amount=${questionCount}&category=9&difficulty=easy`;
+const triviaEndpoint = `http://opentdb.com/api.php?amount=${questionCount}&category=9&difficulty=easy`;
 
 class App extends React.Component {
 	constructor(props) {

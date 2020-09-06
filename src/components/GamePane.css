@@ -10,3 +10,16 @@
 .GamePane__QA {
     flex-grow: 1;
 }
+
+@media screen and (max-width: 700px) {
+    .GamePane {
+        flex-direction: column-reverse;
+        margin-top: 80px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .GamePane {
+        margin-bottom: 160px;
+    }
+}

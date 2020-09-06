@@ -43,3 +43,28 @@
 .Tracker__Item--Unvisited {
     color: var(--grey-mid);
 }
+
+@media screen and (max-width: 700px) {
+    .Tracker {
+        flex-direction: row;
+        width: 100%;
+        margin-left: 0;
+        overflow-x: hidden;
+        margin-bottom: 20px;
+    }
+
+    .Tracker__Item {
+        width: initial;
+        height: 50px;
+        flex-direction: column;
+    }
+
+    .Tracker__Item:not(:last-child) {
+        margin-right: 20px;
+    }
+
+    .Tracker__Tab {
+        width: 30px;
+        height: 10px;
+    }
+}

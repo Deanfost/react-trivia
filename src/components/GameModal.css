@@ -8,6 +8,7 @@
     align-items: center;
     background-color: var(--grey-light);
     border-radius: 10px;
+    margin-bottom: 160px;
 }
 
 .GameFinished__Caption {

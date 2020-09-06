@@ -21,10 +21,12 @@
     background-color: var(--grey-light-2);
 }
 
-.AnswerPane__Choice--Enabled:hover {
-    background-color: var(--accent-blue);
-    color: white;
-    cursor: pointer;
+@media (hover: hover) {
+    .AnswerPane__Choice--Enabled:hover {
+        background-color: var(--accent-blue);
+        color: white;
+        cursor: pointer;
+    }
 }
 
 .AnswerPane__Choice--Correct {

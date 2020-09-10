@@ -7,6 +7,7 @@ class Tracker extends React.Component {
         super(props);
 
         this.activeItemRef = React.createRef();
+        this.trackerRef = React.createRef();
     }
 
     render() {
@@ -33,7 +34,7 @@ class Tracker extends React.Component {
         }
 
         return (
-            <aside className="Tracker">
+            <aside className="Tracker" ref={this.trackerRef}>
                 {results.map(itemProps => {
                     return <TrackerItem {...itemProps} refProp={this.activeItemRef} />;
                 })}
@@ -44,7 +45,13 @@ class Tracker extends React.Component {
     componentDidUpdate() {
         // Scroll to the active tracker item
         const activeItemNode = this.activeItemRef.current;
-        if (activeItemNode) activeItemNode.scrollIntoView(false);
+        const trackerNode = this.trackerRef.current;
+        const activeItemBoundingRect = activeItemNode.getBoundingClientRect();
+        const trackerBoundingRect = trackerNode.getBoundingClientRect();
+        if (activeItemBoundingRect.right > trackerBoundingRect.right) {
+            const scrollDiff = activeItemBoundingRect.right - trackerBoundingRect.right;
+            trackerNode.scrollLeft += scrollDiff;
+        }
     }
 }
 
@@ -63,7 +70,7 @@ const TrackerItem = props => {
     else classExpr += " Tracker__Item--Unvisited";
 
     return (
-        <div className={classExpr} ref={props.isActive? props.refProp : null} >
+        <div className={classExpr} ref={props.isActive? props.refProp : null}>
             <p>Q{props.number}</p>
             {props.isActive && <div className="Tracker__Tab"></div>}
         </div>

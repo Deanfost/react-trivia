@@ -12,3 +12,9 @@
 .App--Centered {
 	align-items: center;
 }
+
+@media screen and (max-width: 700px) {
+	.App {
+		padding: 0 25px;
+	}
+}

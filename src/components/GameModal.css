@@ -8,7 +8,7 @@
     align-items: center;
     background-color: var(--grey-light);
     border-radius: 10px;
-    margin-bottom: 160px;
+    margin: 60px 0;
 }
 
 .GameFinished__Caption {
@@ -43,12 +43,14 @@
 
 @media screen and (max-width: 700px) {
     .GameFinished {
+        margin-bottom: 160px;
         padding-top: 60px;
         padding-bottom: 60px;
     }
 
     .GameFinished__Button {
         width: 80%;
+        height: 60px;
         font-size: 22px;
     }
 

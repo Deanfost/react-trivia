@@ -40,7 +40,7 @@
     border-radius: 10px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
     .GameFinished__Button {
         width: 80%;
     }

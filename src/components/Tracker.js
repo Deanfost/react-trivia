@@ -3,6 +3,12 @@ import PropTypes from 'prop-types';
 import './Tracker.css';
 
 class Tracker extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.activeItemRef = React.createRef();
+    }
+
     render() {
         let results = [];
         for (let i = 0; i < this.props.questionCount; i++) {
@@ -28,9 +34,17 @@ class Tracker extends React.Component {
 
         return (
             <aside className="Tracker">
-                {results.map(itemProps => <TrackerItem {...itemProps} />)}
+                {results.map(itemProps => {
+                    return <TrackerItem {...itemProps} refProp={this.activeItemRef} />;
+                })}
             </aside>
         );
+    }
+
+    componentDidUpdate() {
+        // Scroll to the active tracker item
+        const activeItemNode = this.activeItemRef.current;
+        if (activeItemNode) activeItemNode.scrollIntoView(false);
     }
 }
 
@@ -49,7 +63,7 @@ const TrackerItem = props => {
     else classExpr += " Tracker__Item--Unvisited";
 
     return (
-        <div className={classExpr}>
+        <div className={classExpr} ref={props.isActive? props.refProp : null} >
             <p>Q{props.number}</p>
             {props.isActive && <div className="Tracker__Tab"></div>}
         </div>
@@ -60,7 +74,8 @@ TrackerItem.propTypes = {
     number: PropTypes.number.isRequired,
     isActive: PropTypes.bool.isRequired,
     wasAnswered: PropTypes.bool.isRequired,
-    wasCorrect: PropTypes.bool
+    wasCorrect: PropTypes.bool,
+    refProp: PropTypes.any.isRequired
 }
 
 export default Tracker;

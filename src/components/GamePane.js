@@ -112,12 +112,19 @@ class GamePane extends React.Component {
     }
 
     render() {
+        const isMobile = window.innerWidth <= 700;
+        let quesitonTimerProps = {hasTimer: isMobile};
+        if (isMobile) {
+            quesitonTimerProps.allotedTime = allotedTime;
+            quesitonTimerProps.timeRemaining = this.state.timeRemaining;
+        }
         return (
             <main className="GamePane">
                 <div className="GamePane__QA">
                     <Question
                         questionNumber={this.state.questionObject.number}
                         questionPrompt={this.state.questionObject.prompt}
+                        {...quesitonTimerProps}
                     />
                     <AnswerPane
                         choiceList={this.state.choiceList}
@@ -126,7 +133,7 @@ class GamePane extends React.Component {
                         onAnswer={this.handleQuestionAnswered}
                         answered={this.state.answered}
                     />
-                    <ProgressBar allotedTime={allotedTime} timeRemaining={this.state.timeRemaining} />
+                    {!isMobile && <ProgressBar allotedTime={allotedTime} timeRemaining={this.state.timeRemaining} />}
                 </div>
                 <Tracker 
                     currNumber={this.state.questionObject.number} 

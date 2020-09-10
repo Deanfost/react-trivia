@@ -4,9 +4,18 @@
 }
 
 .Question__Header {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Question__Header h1 {
     font-size: 28px;
     font-weight: bold;
-    margin-bottom: 15px;
+}
+
+.Question__Timer {
+    color: var(--grey-mid);
 }
 
 .Question__Prompt {

@@ -2,12 +2,22 @@ import PropTypes from 'prop-types';
 import './Question.css';
 import React from 'react';
 
-const Question = props => (
-    <div className="Question">
-        <h1 className="Question__Header">Question {props.questionNumber}</h1>
-        <p className="Question__Prompt">{props.questionPrompt}</p>
-    </div>
-);
+const Question = props => {
+    let timerContent = null;
+    if (props.hasTimer) {
+        const paddedString = String(Math.ceil(props.timeRemaining)).padStart(2, "0");
+        timerContent = <h1 className="Question__Timer">{paddedString}</h1>
+    }
+    return (
+        <div className="Question">
+            <div className="Question__Header">
+                <h1>Question {props.questionNumber}</h1>
+                {timerContent}
+            </div>
+            <p className="Question__Prompt">{props.questionPrompt}</p>
+        </div>
+    );
+}
 
 Question.propTypes = {
     questionNumber: PropTypes.number.isRequired,

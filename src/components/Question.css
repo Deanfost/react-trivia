@@ -14,8 +14,12 @@
     font-weight: bold;
 }
 
-.Question__Timer {
+.Question__Timer--Neutral {
     color: var(--grey-mid);
+}
+
+.Question__Timer--Incorrect {
+    color: var(--accent-red);
 }
 
 .Question__Prompt {

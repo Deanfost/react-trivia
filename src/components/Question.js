@@ -6,7 +6,8 @@ const Question = props => {
     let timerContent = null;
     if (props.hasTimer) {
         const paddedString = String(Math.ceil(props.timeRemaining)).padStart(2, "0");
-        timerContent = <h1 className="Question__Timer">{paddedString}</h1>
+        const timerClassExpr = props.timeRemaining <= 0 ? "Question__Timer--Incorrect" : "Question__Timer--Neutral";
+        timerContent = <h1 className={timerClassExpr}>0:{paddedString}</h1>
     }
     return (
         <div className="Question">

@@ -1,7 +1,7 @@
 .GameFinished {
     width: 100%;
     max-width: 500px;
-    height: 360px;
+    padding: 80px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,6 +23,7 @@
     font-weight: bold;
     color: var(--grey-dark);
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .GameFinished__Button {
@@ -41,8 +42,22 @@
 }
 
 @media screen and (max-width: 700px) {
+    .GameFinished {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
     .GameFinished__Button {
         width: 80%;
+        font-size: 22px;
+    }
+
+    .GameFinished__Score {
+        font-size: 26px;
+    }
+
+    .GameFinished__Caption {
+        font-size: 16px;
     }
 }
 

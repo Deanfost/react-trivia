@@ -7,7 +7,7 @@
 }
 
 .AnswerPane__Choice {
-    height: 80px;
+    padding: 25px 15px;
     color: var(--grey-dark);
     display: flex;
     justify-content: center;
@@ -21,14 +21,6 @@
     background-color: var(--grey-light-2);
 }
 
-@media (hover: hover) {
-    .AnswerPane__Choice--Enabled:hover {
-        background-color: var(--accent-blue);
-        color: white;
-        cursor: pointer;
-    }
-}
-
 .AnswerPane__Choice--Correct {
     background-color: var(--accent-green) !important;
     color: white;
@@ -37,4 +29,24 @@
 .AnswerPane__Choice--Incorrect {
     background-color: var(--accent-red) !important;
     color: white;
+}
+
+@media screen and (max-width: 700px) {
+    .AnswerPane {
+        margin-bottom: 0;
+    }
+
+    .AnswerPane__Choice {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 24px;
+    }
+}
+
+@media (hover: hover) {
+    .AnswerPane__Choice--Enabled:hover {
+        background-color: var(--accent-blue);
+        color: white;
+        cursor: pointer;
+    }
 }

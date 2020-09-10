@@ -37,10 +37,15 @@
 		left: 0;
 		flex-direction: column;
 		align-items: center;
+		font-size: 12px;
 	}
 
 	.Footer a {
-		width: 165px;
+		width: 145px;
+	}
+
+	.Footer a ion-icon {
+		font-size: 22px;
 	}
 
 	.Footer a:not(:last-child) {

@@ -55,8 +55,9 @@
 
     .Tracker__Item {
         width: initial;
-        height: 50px;
+        height: 45px;
         flex-direction: column;
+        font-size: 18px;
     }
 
     .Tracker__Item:not(:last-child) {

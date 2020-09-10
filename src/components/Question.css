@@ -28,3 +28,13 @@
     font-weight: normal;
     overflow: hidden;
 }
+
+@media screen and (max-width: 700px) {
+    .Question__Header h1 {
+        font-size: 24px;
+    }
+
+    .Question__Prompt {
+        font-size: 18px;
+    }
+}

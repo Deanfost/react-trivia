@@ -10,7 +10,8 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-id-generator": "^3.0.1",
-    "react-scripts": "3.4.3"
+    "react-scripts": "3.4.3",
+    "serve": "^12.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,5 +35,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://deanfost.github.io/react-trivia/"
+  "homepage": "."
 }

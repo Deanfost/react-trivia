@@ -1,0 +1,9 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+        "Name": "837919784329.dkr.ecr.us-east-1.amazonaws.com/react-trivia",
+        "Update": "true"
+    },
+    "Entrypoint": "/app",
+    "Command": "npx serve -s build"
+}

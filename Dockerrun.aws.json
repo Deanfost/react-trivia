@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-        "Name": "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME",
+        "Name": "837919784329.dkr.ecr.us-east-1.amazonaws.com/react-trivia",
         "Update": "true"
     },
     "ports": [

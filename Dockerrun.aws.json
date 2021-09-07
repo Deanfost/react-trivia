@@ -8,6 +8,5 @@
         {
             "ContainerPort": 5000
         }
-    ],
-    "Command": "npx serve -s build"
+    ]
 }

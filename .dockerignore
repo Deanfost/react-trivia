@@ -7,4 +7,6 @@ README.md
 .gitignore
 **/.git 
 **/.DS_Store
-src
+buildspec.yaml
+Dockerrun.aws.json
+

@@ -9,6 +9,5 @@
             "ContainerPort": 5000
         }
     ],
-    "Entrypoint": "/app",
     "Command": "npx serve -s build"
 }

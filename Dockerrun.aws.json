@@ -4,6 +4,11 @@
         "Name": "837919784329.dkr.ecr.us-east-1.amazonaws.com/react-trivia",
         "Update": "true"
     },
+    "ports": [
+        {
+            "ContainerPort": 5000
+        }
+    ],
     "Entrypoint": "/app",
     "Command": "npx serve -s build"
 }
